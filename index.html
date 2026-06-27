@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta content="#080808" name="theme-color"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="Rutina" name="apple-mobile-web-app-title"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Tu rutina diaria, misiones y registro personal." name="description"/>
+<title>Rutina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="manifest.webmanifest" rel="manifest"/>
+<link href="assets/icon-192.png" rel="icon"/>
+<link href="assets/icon-192.png" rel="apple-touch-icon"/>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="app-shell" id="app">
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div>
+    <p class="eyebrow" id="todayLabel">Hoy</p>
+    <h1 id="appTitle">Rutina</h1>
+  </div>
+  <button aria-label="Cambiar tema" class="icon-button" id="themeToggle" type="button">☾</button>
+</header>
+
+<main class="content">
+
+  <!-- ── HOY ──────────────────────────────────────────────── -->
+  <section class="view active-view" id="view-today" aria-label="Hoy">
+    <div class="hero-card">
+      <div class="hero-text">
+        <p class="eyebrow">Avance de hoy</p>
+        <h2 id="todayTitle">Un día a la vez</h2>
+        <p class="muted">Marca lo importante, sigue sin castigarte.</p>
+      </div>
+      <div class="ring" aria-label="Progreso diario">
+        <svg viewBox="0 0 100 100" role="img">
+          <circle class="ring-bg" cx="50" cy="50" r="42"/>
+          <circle class="ring-progress" cx="50" cy="50" id="dailyRing" r="42"/>
+        </svg>
+        <span id="dailyPercent">0%</span>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <article class="stat-card">
+        <span>Racha</span>
+        <strong id="streakCount">0 días</strong>
+      </article>
+      <article class="stat-card">
+        <span>Fallas / mes</span>
+        <strong id="failCount">0/10</strong>
+      </article>
+      <article class="stat-card">
+        <span>Alcancía</span>
+        <strong id="piggyTotal">$0</strong>
+      </article>
+    </div>
+
+    <section class="panel">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">Checklist diario</p>
+          <h3 id="checklistSubtitle">Hábitos de hoy</h3>
+        </div>
+        <button class="secondary-button small" id="resetTodayBtn" type="button">Limpiar</button>
+      </div>
+      <div class="check-list" id="dailyChecklist"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">Bloque de hoy</p>
+          <h3>Plan del día</h3>
+        </div>
+      </div>
+      <div class="mini-timeline" id="todaySchedule"></div>
+    </section>
+
+    <section class="panel danger-soft">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">Reset emocional</p>
+          <h3>¿Fallaste o actuaste mal?</h3>
+        </div>
+      </div>
+      <p class="muted">Regístralo, escoge una reparación pequeña y sigue. No eres el error.</p>
+      <button class="primary-button" data-open="failModal" type="button">Registrar falla</button>
+    </section>
+  </section>
+
+  <!-- ── RESUMEN ───────────────────────────────────────────── -->
+  <section class="view" id="view-summary" aria-label="Resumen">
+    <div class="section-title sticky-title">
+      <div>
+        <p class="eyebrow">Resumen mensual</p>
+        <h2 id="summaryTitle">Tu mes en claro</h2>
+      </div>
+    </div>
+
+    <!-- Navegación entre meses -->
+    <div class="month-nav">
+      <button class="secondary-button small" id="prevMonthBtn" type="button">← Anterior</button>
+      <span class="month-nav-title" id="monthNavLabel">junio 2026</span>
+      <button class="secondary-button small" id="nextMonthBtn" type="button">Siguiente →</button>
+    </div>
+
+    <p class="muted page-note" id="summarySubtitle">Mira qué cumpliste, qué quedó flojo y qué días no registraste.</p>
+
+    <div class="stats-grid summary-stats">
+      <article class="stat-card"><span>Avance</span><strong id="summaryPercent">0%</strong></article>
+      <article class="stat-card"><span>Checks</span><strong id="summaryDone">0/0</strong></article>
+      <article class="stat-card"><span>Días buenos</span><strong id="summaryGoodDays">0</strong></article>
+      <article class="stat-card"><span>Pendientes</span><strong id="summaryPendingDays">0</strong></article>
+    </div>
+
+    <section class="panel">
+      <div class="section-title">
+        <div><p class="eyebrow">Lectura rápida</p><h3>Qué hiciste y qué te faltó</h3></div>
+      </div>
+      <div class="summary-insight" id="summaryInsight"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title compact-title">
+        <div><p class="eyebrow">Progreso</p><h3>Checklist acumulado</h3></div>
+        <strong id="summaryProgressText">0%</strong>
+      </div>
+      <div class="safe-progress" aria-hidden="true"><span id="summaryProgressBar"></span></div>
+      <p class="muted" id="summaryProgressHelp">Todavía no hay suficiente información.</p>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <div><p class="eyebrow">Por hábito</p><h3>Lo más y menos cumplido</h3></div>
+      </div>
+      <div class="breakdown-list" id="checkBreakdown"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <div><p class="eyebrow">Día por día</p><h3>Historial del mes</h3></div>
+      </div>
+      <div class="month-days-list" id="monthlyDaysList"></div>
+    </section>
+  </section>
+
+  <!-- ── MISIONES ──────────────────────────────────────────── -->
+  <section class="view" id="view-missions" aria-label="Misiones">
+    <div class="section-title sticky-title">
+      <div>
+        <p class="eyebrow">Misiones</p>
+        <h2>Metas grandes</h2>
+      </div>
+      <button class="primary-button small" data-open="missionModal" type="button">+ Nueva</button>
+    </div>
+    <div class="filter-row" id="missionFilters"></div>
+    <div class="cards-list" id="missionsList"></div>
+  </section>
+
+  <!-- ── ALCANCÍA ──────────────────────────────────────────── -->
+  <section class="view" id="view-piggy" aria-label="Alcancía">
+    <div class="section-title sticky-title">
+      <div>
+        <p class="eyebrow">Alcancía</p>
+        <h2 id="piggyTitle">Registro de fallas</h2>
+      </div>
+      <button class="primary-button small" data-open="failModal" type="button">+ Falla</button>
+    </div>
+
+    <div class="stats-grid">
+      <article class="stat-card"><span>Usadas</span><strong id="piggyFailCount">0/10</strong></article>
+      <article class="stat-card"><span>Restantes</span><strong id="failRemaining">10</strong></article>
+      <article class="stat-card"><span>Acumulado</span><strong id="piggyAmount">$0</strong></article>
+    </div>
+
+    <section class="panel" aria-labelledby="piggyProgressTitle">
+      <div class="section-title compact-title">
+        <div><p class="eyebrow">Mes actual</p><h3 id="piggyProgressTitle">Uso de fallas</h3></div>
+        <strong id="piggyProgressText">0%</strong>
+      </div>
+      <div class="safe-progress" aria-hidden="true"><span id="piggyProgressBar"></span></div>
+      <p class="muted" id="piggyProgressHelp">Te quedan 10 fallas disponibles.</p>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <div><p class="eyebrow">Historial</p><h3>Últimas fallas registradas</h3></div>
+      </div>
+      <div class="log-list" id="failList"></div>
+    </section>
+  </section>
+
+  <!-- ── HORARIO ───────────────────────────────────────────── -->
+  <section class="view" id="view-schedule" aria-label="Horario">
+    <div class="section-title sticky-title">
+      <div>
+        <p class="eyebrow">Horario</p>
+        <h2>Semana replicable</h2>
+      </div>
+      <button class="secondary-button small" id="resetScheduleBtn" type="button">Sugerido</button>
+    </div>
+    <p class="muted page-note">Gym 2 h diarias · Sábado libre · Domingo libre hasta las 6 p.m.</p>
+    <div class="day-tabs" id="dayTabs"></div>
+    <section class="panel">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow" id="activeDayLabel">Lunes</p>
+          <h3>Bloques del día</h3>
+        </div>
+        <button class="primary-button small" data-open="scheduleModal" type="button">+ Bloque</button>
+      </div>
+      <div class="timeline" id="scheduleList"></div>
+    </section>
+  </section>
+
+  <!-- ── AJUSTES ───────────────────────────────────────────── -->
+  <section class="view" id="view-settings" aria-label="Ajustes">
+    <div class="section-title sticky-title">
+      <div><p class="eyebrow">Ajustes</p><h2>Personalización</h2></div>
+    </div>
+
+    <section class="panel">
+      <h3>Instalación</h3>
+      <p class="muted" id="installHint">Cuando el navegador lo permita aparece el botón de instalación.</p>
+      <button class="primary-button" id="installAppBtn" type="button">Instalar app</button>
+    </section>
+
+    <section class="panel">
+      <h3>General</h3>
+      <div class="form-grid single">
+        <label>Nombre visible
+          <input id="appNameInput" maxlength="24" type="text" value="Rutina"/>
+        </label>
+        <label>Fallas permitidas por mes
+          <input id="failLimitInput" inputmode="numeric" max="99" min="1" step="1" type="number"/>
+        </label>
+      </div>
+      <button class="primary-button" id="saveSettingsBtn" style="margin-top:10px" type="button">Guardar</button>
+    </section>
+
+    <!-- Checklist editable -->
+    <section class="panel">
+      <div class="section-title">
+        <div><p class="eyebrow">Hábitos diarios</p><h3>Editar checklist</h3></div>
+        <button class="secondary-button small" id="addCheckBtn" type="button">+ Hábito</button>
+      </div>
+      <p class="muted" style="margin-bottom:12px;font-size:.82rem">Máximo 10. Los cambios reinician el checklist de hoy.</p>
+      <div id="checkEditor"></div>
+      <button class="primary-button" id="saveChecksBtn" style="margin-top:12px" type="button">Guardar hábitos</button>
+    </section>
+
+    <section class="panel">
+      <h3>Respaldo</h3>
+      <p class="muted">Exporta tus datos como JSON para no perder misiones, horario y alcancía.</p>
+      <div class="button-row">
+        <button class="secondary-button" id="exportBtn" type="button">Exportar</button>
+        <label class="secondary-button file-label">Importar
+          <input accept="application/json" hidden id="importInput" type="file"/>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel danger-soft">
+      <h3>Reiniciar</h3>
+      <p class="muted">Borra todos los datos de este navegador/celular.</p>
+      <button class="danger-button" id="resetAllBtn" type="button">Borrar todo</button>
+    </section>
+  </section>
+
+</main>
+
+<!-- NAV -->
+<nav aria-label="Navegación principal" class="bottom-nav">
+  <button class="nav-item active" data-view="today" type="button"><span class="nav-icon">◎</span>Hoy</button>
+  <button class="nav-item" data-view="summary" type="button"><span class="nav-icon">◐</span>Resumen</button>
+  <button class="nav-item" data-view="missions" type="button"><span class="nav-icon">◈</span>Misiones</button>
+  <button class="nav-item" data-view="piggy" type="button"><span class="nav-icon">◉</span>Alcancía</button>
+  <button class="nav-item" data-view="schedule" type="button"><span class="nav-icon">◫</span>Horario</button>
+</nav>
+</div>
+
+<button aria-label="Abrir ajustes" class="floating-settings" data-view-shortcut="settings" type="button">⚙</button>
+
+<!-- MODAL MISIÓN -->
+<dialog class="modal" id="missionModal">
+  <form class="modal-card" id="missionForm" method="dialog">
+    <div class="section-title">
+      <div><p class="eyebrow">Nueva misión</p><h3>Crear meta</h3></div>
+      <button class="icon-button" type="submit" value="cancel">×</button>
+    </div>
+    <label>Título
+      <input name="title" placeholder="Ej: Aprender a cocinar" required/>
+    </label>
+    <label>Categoría
+      <select name="category">
+        <option>Vida</option><option>Estudio</option>
+        <option>Social</option><option>Salud</option><option>Trabajo</option>
+      </select>
+    </label>
+    <label>Pasos iniciales (separados por coma)
+      <textarea name="steps" placeholder="Paso 1, Paso 2, Paso 3" rows="3"></textarea>
+    </label>
+    <menu class="modal-actions">
+      <button class="secondary-button" type="submit" value="cancel">Cancelar</button>
+      <button class="primary-button" type="submit">Guardar</button>
+    </menu>
+  </form>
+</dialog>
+
+<!-- MODAL FALLA -->
+<dialog class="modal" id="failModal">
+  <form class="modal-card" id="failForm" method="dialog">
+    <div class="section-title">
+      <div><p class="eyebrow">Registro de falla</p><h3>¿Qué pasó?</h3></div>
+      <button class="icon-button" type="submit" value="cancel">×</button>
+    </div>
+    <label>Tipo de falla
+      <select name="type">
+        <option>Sobrepensé demasiado</option>
+        <option>Respondí mal</option>
+        <option>Procrastiné</option>
+        <option>Me comparé</option>
+        <option>Gasté tiempo en algo que no quería</option>
+        <option>No cumplí algo importante</option>
+        <option>Otro</option>
+      </select>
+    </label>
+    <label>Peso de la falla
+      <select name="severity">
+        <option value="1000">Leve — $1.000</option>
+        <option value="2000">Media — $2.000</option>
+        <option value="5000">Fuerte — $5.000</option>
+      </select>
+    </label>
+    <label>Acción de reparación
+      <select name="repair">
+        <option>Respirar 2 minutos</option>
+        <option>Escribir qué pasó</option>
+        <option>Pedir disculpas si aplica</option>
+        <option>Hacer una acción pequeña ahora</option>
+        <option>Soltar y continuar</option>
+      </select>
+    </label>
+    <label>Nota (opcional)
+      <textarea name="note" placeholder="Qué pasó, sin insultarte" rows="2"></textarea>
+    </label>
+    <menu class="modal-actions">
+      <button class="secondary-button" type="submit" value="cancel">Cancelar</button>
+      <button class="primary-button" type="submit">Registrar</button>
+    </menu>
+  </form>
+</dialog>
+
+<!-- MODAL HORARIO -->
+<dialog class="modal" id="scheduleModal">
+  <form class="modal-card" id="scheduleForm" method="dialog">
+    <div class="section-title">
+      <div><p class="eyebrow">Nuevo bloque</p><h3>Agregar al día</h3></div>
+      <button class="icon-button" type="submit" value="cancel">×</button>
+    </div>
+    <label>Hora
+      <input name="time" placeholder="Ej: 7:00 p.m." required/>
+    </label>
+    <label>Actividad
+      <input name="title" placeholder="Ej: Conducción teórica 45 min" required/>
+    </label>
+    <label>Tipo
+      <select name="kind">
+        <option>Principal</option>
+        <option>Pequeño</option>
+        <option>Gym</option>
+        <option>Descanso</option>
+        <option>Ocupado</option>
+      </select>
+    </label>
+    <menu class="modal-actions">
+      <button class="secondary-button" type="submit" value="cancel">Cancelar</button>
+      <button class="primary-button" type="submit">Guardar</button>
+    </menu>
+  </form>
+</dialog>
+
+<div aria-live="polite" class="toast" id="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>
