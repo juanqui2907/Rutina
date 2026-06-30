@@ -188,28 +188,39 @@ function getDefaultState() {
 function getSuggestedSchedule() {
   return {
     Lunes: [
-      { id: uid('block'), time: 'Gym', title: 'Entrenamiento 2 h', kind: 'Gym' },
-      { id: uid('block'), time: 'Noche', title: 'Conducción teórica 45 min', kind: 'Principal' }
+      { id: uid('block'), time: '6:00 - 7:00', title: 'Levantarte, asearte, desayunar', kind: 'Descanso' },
+      { id: uid('block'), time: '7:00 - 9:00', title: 'Bloque profundo: Conducción teórica 45 min', kind: 'Principal' },
+      { id: uid('block'), time: 'Durante el día', title: 'Tus actividades normales', kind: 'Ocupado' },
+      { id: uid('block'), time: '10:00 - 12:00', title: 'Gimnasio', kind: 'Gym' },
+      { id: uid('block'), time: 'Noche (20 min)', title: '¿Qué hice hoy? · ¿Qué me preocupó? · ¿Qué haré mañana?', kind: 'Pequeño' }
     ],
     Martes: [
-      { id: uid('block'), time: 'Gym', title: 'Entrenamiento 2 h', kind: 'Gym' },
-      { id: uid('block'), time: 'Noche', title: 'Artículo 1 — 90 min', kind: 'Principal' },
-      { id: uid('block'), time: 'Rato corto', title: 'Enviar 2 mensajes', kind: 'Pequeño' }
+      { id: uid('block'), time: '6:00 - 7:00', title: 'Levantarte, asearte, desayunar', kind: 'Descanso' },
+      { id: uid('block'), time: '7:00 - 9:00', title: 'Bloque profundo: Artículo 1 — 90 min', kind: 'Principal' },
+      { id: uid('block'), time: 'Durante el día', title: 'Tus actividades normales', kind: 'Ocupado' },
+      { id: uid('block'), time: '10:00 - 12:00', title: 'Gimnasio', kind: 'Gym' },
+      { id: uid('block'), time: 'Noche (20 min)', title: '¿Qué hice hoy? · ¿Qué me preocupó? · ¿Qué haré mañana?', kind: 'Pequeño' }
     ],
     Miércoles: [
-      { id: uid('block'), time: 'Gym', title: 'Entrenamiento 2 h', kind: 'Gym' },
-      { id: uid('block'), time: 'Noche', title: 'Cocinar una receta básica', kind: 'Principal' },
-      { id: uid('block'), time: 'Rato corto', title: 'Baile 20–30 min', kind: 'Pequeño' }
+      { id: uid('block'), time: '6:00 - 7:00', title: 'Levantarte, asearte, desayunar', kind: 'Descanso' },
+      { id: uid('block'), time: '7:00 - 9:00', title: 'Bloque profundo: Cocinar una receta básica', kind: 'Principal' },
+      { id: uid('block'), time: 'Durante el día', title: 'Tus actividades normales', kind: 'Ocupado' },
+      { id: uid('block'), time: '10:00 - 12:00', title: 'Gimnasio', kind: 'Gym' },
+      { id: uid('block'), time: 'Noche (20 min)', title: '¿Qué hice hoy? · ¿Qué me preocupó? · ¿Qué haré mañana?', kind: 'Pequeño' }
     ],
     Jueves: [
-      { id: uid('block'), time: 'Gym', title: 'Entrenamiento 2 h', kind: 'Gym' },
-      { id: uid('block'), time: 'Noche', title: 'Artículo 2 — 90 min', kind: 'Principal' },
-      { id: uid('block'), time: 'Rato corto', title: 'Enviar 2 mensajes', kind: 'Pequeño' }
+      { id: uid('block'), time: '6:00 - 7:00', title: 'Levantarte, asearte, desayunar', kind: 'Descanso' },
+      { id: uid('block'), time: '7:00 - 9:00', title: 'Bloque profundo: Artículo 2 — 90 min', kind: 'Principal' },
+      { id: uid('block'), time: 'Durante el día', title: 'Tus actividades normales', kind: 'Ocupado' },
+      { id: uid('block'), time: '10:00 - 12:00', title: 'Gimnasio', kind: 'Gym' },
+      { id: uid('block'), time: 'Noche (20 min)', title: '¿Qué hice hoy? · ¿Qué me preocupó? · ¿Qué haré mañana?', kind: 'Pequeño' }
     ],
     Viernes: [
-      { id: uid('block'), time: 'Gym', title: 'Entrenamiento 2 h', kind: 'Gym' },
-      { id: uid('block'), time: 'Noche', title: 'LinkedIn 60 min', kind: 'Principal' },
-      { id: uid('block'), time: 'Rato corto', title: 'Carta 30 min', kind: 'Pequeño' }
+      { id: uid('block'), time: '6:00 - 7:00', title: 'Levantarte, asearte, desayunar', kind: 'Descanso' },
+      { id: uid('block'), time: '7:00 - 9:00', title: 'Bloque profundo: LinkedIn + Carta', kind: 'Principal' },
+      { id: uid('block'), time: 'Durante el día', title: 'Tus actividades normales', kind: 'Ocupado' },
+      { id: uid('block'), time: '10:00 - 12:00', title: 'Gimnasio', kind: 'Gym' },
+      { id: uid('block'), time: 'Noche (20 min)', title: '¿Qué hice hoy? · ¿Qué me preocupó? · ¿Qué haré mañana?', kind: 'Pequeño' }
     ],
     Sábado: [
       { id: uid('block'), time: 'Todo el día', title: 'Ocupado — sin tareas obligatorias', kind: 'Ocupado' }
