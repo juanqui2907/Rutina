@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rutina-cache-v1';
+const CACHE_NAME = 'rutina-cache-v5';
 
 const ASSETS = [
   './',
